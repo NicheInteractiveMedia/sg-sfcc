@@ -1,0 +1,5 @@
+<isif condition="${'shoppingGivesEnabled' in dw.system.Site.current.preferences.custom ? dw.system.Site.current.preferences.custom.shoppingGivesEnabled : false}">
+    <script src="${URLUtils.staticURL('/js/shoppingGivesTracking.js')}"></script>
+    <isset value="${dw.system.Site.current.preferences.custom}" name="sitePref" scope="page" />
+    <div class="shopping-gives-tracking d-none" data-shopping-gives-store-id="${sitePref.shoppingGivesStoreId}" data-order-id="${pdict.Order.currentOrderNo}" data-order-token="${pdict.Order.orderToken}" data-tracking-url="${URLUtils.url("ShoppingGives-TrackingID")}"></div>
+</isif>

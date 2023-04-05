@@ -1,0 +1,210 @@
+{
+  "step-types": {
+    "script-module-step": [
+      {
+        "@type-id": "custom.shoppingGives.UploadFiles",
+        "@supports-parallel-execution": "false",
+        "@supports-site-context": "true",
+        "@supports-organization-context": "false",
+        "description": "ShoppingGives upload file to S3 Bucket using configuration which are defined inside site preference",
+        "module": "bm_shoppinggives/cartridge/scripts/jobs/uploadFile.js",
+        "function": "uploadFile",
+        "transactional": "false",
+        "parameters": {
+          "parameter": [
+            {
+              "@name": "srcFolder",
+              "@type": "string",
+              "@required": "true",
+              "@trim": "true",
+              "description": "Source folder path (in IMPEX)",
+              "default-value": "/src/shoppingGives/feeds/"
+            },
+            {
+              "@name": "remotePath",
+              "@type": "string",
+              "@required": "true",
+              "@trim": "true",
+              "description": "remote path to upload the file either /orders or /products"
+            },
+            {
+              "@name": "archivePath",
+              "@type": "string",
+              "@required": "true",
+              "@trim": "true",
+              "description": "remote path to archive file after successfully upload to server"
+            },
+            {
+              "@name": "deleteFile",
+              "description": "Delete file after sucessfull upload to S3",
+              "@type": "boolean",
+              "@required": "false",
+              "@trim": "true",
+              "default-value": true
+            }
+          ]
+        }
+      }
+    ],
+    "chunk-script-module-step": [
+      {
+        "@type-id": "custom.shoppingGives.ExportOrders.full",
+        "@supports-parallel-execution": "false",
+        "@supports-site-context": "true",
+        "@supports-organization-context": false,
+        "description": "Exports all the orders from site to impex",
+        "module": "bm_shoppinggives/cartridge/scripts/jobs/exportOrders.js",
+        "before-step-function": "beforeStep",
+        "total-count-function": "getTotalCount",
+        "read-function": "read",
+        "process-function": "process",
+        "write-function": "write",
+        "after-step-function": "afterStep",
+        "chunk-size": 500,
+        "transactional": "false",
+        "parameters": {
+          "parameter": [
+            {
+              "@name": "srcFolder",
+              "@type": "string",
+              "@required": "true",
+              "@trim": "true",
+              "description": "Source folder path (in IMPEX) to export the file",
+              "default-value": "/src/shoppingGives/feeds/order"
+            }
+          ]
+        },
+        "status-codes": {
+          "status": [
+            {
+              "@code": "ERROR",
+              "description": "Used when an error occurred."
+            },
+            {
+              "@code": "OK",
+              "description": "Used when everything went well."
+            }
+          ]
+        }
+      },
+      {
+        "@type-id": "custom.shoppingGives.ExportOrders.delta",
+        "@supports-parallel-execution": "false",
+        "@supports-site-context": "true",
+        "@supports-organization-context": false,
+        "description": "Exports only those orders which were placed since last run from site to impex",
+        "module": "bm_shoppinggives/cartridge/scripts/jobs/exportOrdersDelta.js",
+        "before-step-function": "beforeStep",
+        "total-count-function": "getTotalCount",
+        "read-function": "read",
+        "process-function": "process",
+        "write-function": "write",
+        "after-step-function": "afterStep",
+        "chunk-size": 500,
+        "transactional": "false",
+        "parameters": {
+          "parameter": [
+            {
+              "@name": "srcFolder",
+              "@type": "string",
+              "@required": "true",
+              "@trim": "true",
+              "description": "Source folder path (in IMPEX) to export the file",
+              "default-value": "/src/shoppingGives/feeds/order"
+            }
+          ]
+        },
+        "status-codes": {
+          "status": [
+            {
+              "@code": "ERROR",
+              "description": "Used when an error occurred."
+            },
+            {
+              "@code": "OK",
+              "description": "Used when everything went well."
+            }
+          ]
+        }
+      },
+      {
+        "@type-id": "custom.shoppingGives.ExportProducts.full",
+        "@supports-parallel-execution": "false",
+        "@supports-site-context": "true",
+        "@supports-organization-context": false,
+        "description": "Exports all the products from site to impex",
+        "module": "bm_shoppinggives/cartridge/scripts/jobs/exportProducts.js",
+        "before-step-function": "beforeStep",
+        "read-function": "read",
+        "process-function": "process",
+        "write-function": "write",
+        "after-step-function": "afterStep",
+        "chunk-size": 500,
+        "transactional": "false",
+        "parameters": {
+          "parameter": [
+            {
+              "@name": "srcFolder",
+              "@type": "string",
+              "@required": "true",
+              "@trim": "true",
+              "description": "Source folder path (in IMPEX) to export the file",
+              "default-value": "/src/shoppingGives/feeds/products"
+            }
+          ]
+        },
+        "status-codes": {
+          "status": [
+            {
+              "@code": "ERROR",
+              "description": "Used when an error occurred."
+            },
+            {
+              "@code": "OK",
+              "description": "Used when everything went well."
+            }
+          ]
+        }
+      },
+      {
+        "@type-id": "custom.shoppingGives.ExportProducts.delta",
+        "@supports-parallel-execution": "false",
+        "@supports-site-context": "true",
+        "@supports-organization-context": false,
+        "description": "Exports only those products which were updated since last run from site to impex",
+        "module": "bm_shoppinggives/cartridge/scripts/jobs/exportProductsDelta.js",
+        "before-step-function": "beforeStep",
+        "read-function": "read",
+        "process-function": "process",
+        "write-function": "write",
+        "after-step-function": "afterStep",
+        "chunk-size": 500,
+        "transactional": "false",
+        "parameters": {
+          "parameter": [
+            {
+              "@name": "srcFolder",
+              "@type": "string",
+              "@required": "true",
+              "@trim": "true",
+              "description": "Source folder path (in IMPEX) to export the file",
+              "default-value": "/src/shoppingGives/feeds/products"
+            }
+          ]
+        },
+        "status-codes": {
+          "status": [
+            {
+              "@code": "ERROR",
+              "description": "Used when an error occurred."
+            },
+            {
+              "@code": "OK",
+              "description": "Used when everything went well."
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
